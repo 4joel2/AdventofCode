@@ -23,6 +23,20 @@ bool isSafe(const std::vector<int>& levels) {
     return increasing || decreasing; // Must be all increasing or all decreasing
 }
 
+bool isSafeWithDampener(const std::vector<int>& levels) {
+    if (isSafe(levels)) return true; // Already safe
+
+    // Try removing each level and check if it becomes safe
+    for (size_t i = 0; i < levels.size(); ++i) {
+        std::vector<int> modifiedLevels = levels;
+        modifiedLevels.erase(modifiedLevels.begin() + i); // Remove one level
+        if (isSafe(modifiedLevels)) {
+            return true; // Safe after removing this level
+        }
+    }
+
+    return false; // Not safe even with one level removed
+}
 int main() {
     // Open the file
     std::ifstream inputFile("../Day2/day2input");
@@ -52,7 +66,7 @@ int main() {
     // Analyze each report
     int safeCount = 0;
     for (const auto& report : reports) {
-        if (isSafe(report)) {
+            if (isSafeWithDampener(report)) {
             ++safeCount;
         }
     }
